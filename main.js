@@ -1,52 +1,86 @@
-function playSound(soundId) {
-    var audio = document.getElementById(soundId);
-    if (audio) {
-      audio.currentTime = 0; // 再生位置をリセット
-      audio.play();
-    }
+// CSVファイルのURL（sample.csvを配置した場所に合わせて変更してください）
+const csvFileUrl = 'sound_list.csv';
+
+// CSVファイルを読み込む関数
+function readCSVFile(url) {
+  fetch(url)
+    .then((response) => response.text())
+    .then((data) => {
+      const lines = data.split('\n');
+      const csvData = [];
+
+      // CSVデータを処理
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',');
+        csvData.push(values);
+      }
+
+      // カテゴリごとにグループ化
+      const groupedData = groupByCategory(csvData);
+
+      // カテゴリごとにHTML要素を生成
+      generateCategoryElements(groupedData);
+    })
+    .catch((error) => {
+      console.error('CSVファイルの読み込み中にエラーが発生しました:', error);
+    });
 }
 
-// CSVファイルの内容を仮定
-const csvData = [
-  ["カテゴリ1", "メニュー1", "./Resource/menu_01.wav", "2023-09-11"],
-  ["カテゴリ1", "メニュー2", "./Resource/menu_02.wav", "2023-09-12"],
-  // 他の行も同様に続きます
-];
-
-// HTMLボタンと音声を生成する関数
-function generateButtonsFromCSV(data) {
-  const container = document.body; // ボタンを追加するコンテナ要素
+// カテゴリごとにデータをグループ化する関数
+function groupByCategory(data) {
+  const groupedData = new Map();
 
   data.forEach((row) => {
     const category = row[0];
-    const buttonName = row[1];
-    const sourceFilePath = row[2];
-    const updateDate = row[3];
 
-    const pElement = document.createElement("p");
-    pElement.className = "btn";
+    if (!groupedData.has(category)) {
+      groupedData.set(category, []);
+    }
 
-    const aElement = document.createElement("a");
-    aElement.textContent = buttonName;
-    aElement.onclick = function () {
-      playSound(sourceFilePath);
-    };
+    groupedData.get(category).push(row);
+  });
 
-    pElement.appendChild(aElement);
-    container.appendChild(pElement);
+  return groupedData;
+}
 
-    const audioElement = document.createElement("audio");
-    audioElement.id = sourceFilePath; // ファイルパスをIDとして使用
-    audioElement.preload = "auto";
+// カテゴリごとにHTML要素を生成する関数
+function generateCategoryElements(groupedData) {
+  const container = document.body;
 
-    const sourceElement = document.createElement("source");
-    sourceElement.src = sourceFilePath;
-    sourceElement.type = "audio/wav";
+  groupedData.forEach((categoryData, category) => {
+    const h2Element = document.createElement("h2");
+    h2Element.textContent = category;
+    container.appendChild(h2Element);
 
-    audioElement.appendChild(sourceElement);
-    container.appendChild(audioElement);
+    categoryData.forEach((row, index) => {
+      const buttonName = row[1];
+      const sourceFilePath = row[2];
+
+      const pElement = document.createElement("p");
+      pElement.className = "btn";
+
+      const aElement = document.createElement("a");
+      aElement.textContent = buttonName;
+      aElement.onclick = function () {
+        playSound(`sound${index + 1}`);
+      };
+
+      pElement.appendChild(aElement);
+      container.appendChild(pElement);
+
+      const audioElement = document.createElement("audio");
+      audioElement.id = `sound${index + 1}`;
+      audioElement.preload = "auto";
+
+      const sourceElement = document.createElement("source");
+      sourceElement.src = sourceFilePath;
+      sourceElement.type = "audio/wav";
+
+      audioElement.appendChild(sourceElement);
+      container.appendChild(audioElement);
+    });
   });
 }
 
-// CSVデータを使用してボタンと音声を生成
-generateButtonsFromCSV(csvData);
+// CSVファイルを読み込んで処理開始
+readCSVFile(csvFileUrl);
