@@ -78,9 +78,6 @@ function generateCategoryElements(groupedData) {
         playSound(`sound${count + 1}`);
       };
 
-      pElement.appendChild(aElement);
-      container.appendChild(pElement);
-
       const audioElement = document.createElement("audio");
       audioElement.id = `sound${count + 1}`;
       audioElement.preload = "auto";
