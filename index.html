@@ -1,4 +1,19 @@
-<div>
-    <h2>テスト</h2>
-    <audio controls src="./Resource/menu_01.wav"></audio>
-  </div>
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>サロメボタン</title>
+    <script src="main.js"></script>
+  </head>
+
+  <body>
+    <p class="btn"><a onclick="playSound('sound1')">メニューですわ〜</a></p>
+    <p class="btn"><a onclick="playSound('sound2')">メニューですわ〜2</a></p>
+    <audio id="sound1" preload="auto">
+      <source src="./Resource/menu_01.wav" type="audio/wav">
+    </audio>
+    <audio id="sound2" preload="auto">
+      <source src="./Resource/menu_01.wav" type="audio/wav">
+    </audio>
+  </body>
+</html>
