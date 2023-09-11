@@ -74,9 +74,8 @@ function generateCategoryElements(groupedData) {
       pElement.appendChild(aElement);
       // pElement を container に追加
       container.appendChild(pElement);
-      aElement.onclick = function () {
-        playSound(`sound${count + 1}`);
-      };
+
+      aElement.setAttribute('onclick', `playSound(sound${count + 1})`);
 
       const audioElement = document.createElement("audio");
       audioElement.id = `sound${count + 1}`;
