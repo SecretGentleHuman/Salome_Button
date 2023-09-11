@@ -1,6 +1,14 @@
 // CSVファイルのURL（sample.csvを配置した場所に合わせて変更してください）
 const csvFileUrl = 'sound_list.csv';
 
+function playSound(soundId) {
+  var audio = document.getElementById(soundId);
+  if (audio) {
+    audio.currentTime = 0; // 再生位置をリセット
+    audio.play();
+  }
+}
+
 // CSVファイルを読み込む関数
 function readCSVFile(url) {
   fetch(url)
