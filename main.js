@@ -70,6 +70,10 @@ function generateCategoryElements(groupedData) {
 
       const aElement = document.createElement("a");
       aElement.textContent = buttonName;
+      // aElement を pElement に追加
+      pElement.appendChild(aElement);
+      // pElement を container に追加
+      container.appendChild(pElement);
       aElement.onclick = function () {
         playSound(`sound${count + 1}`);
       };
