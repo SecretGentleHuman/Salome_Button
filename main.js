@@ -71,14 +71,14 @@ function generateCategoryElements(groupedData) {
       const aElement = document.createElement("a");
       aElement.textContent = buttonName;
       aElement.onclick = function () {
-        playSound(`sound${count + 1}`);
+        playSound(`sound${index + 1}`);
       };
 
       pElement.appendChild(aElement);
       container.appendChild(pElement);
 
       const audioElement = document.createElement("audio");
-      audioElement.id = `sound${count + 1}`;
+      audioElement.id = `sound${index + 1}`;
       audioElement.preload = "auto";
 
       const sourceElement = document.createElement("source");
